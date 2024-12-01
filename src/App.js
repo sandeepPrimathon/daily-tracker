@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import ActivityForm from "./components/ActivityForm";
+import TaskList from "./components/TaskList";
+import CalendarView from "./components/CalendarView";
+import ActivityChart from "./components/ActivityChart";
+import "./App.css";
 
-function App() {
+const App = () => {
+  // Initialize state with localStorage data
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
+
+  // Save tasks to localStorage whenever tasks state updates
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  const addTask = (task) => setTasks([...tasks, task]);
+
+  const toggleComplete = (id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Daily Routine Tracker</h1>
+      <ActivityForm onAddTask={addTask} />
+      <TaskList tasks={tasks} onToggleComplete={toggleComplete} />
+      <CalendarView tasks={tasks} />
+      <ActivityChart tasks={tasks} />
     </div>
   );
-}
+};
 
 export default App;
