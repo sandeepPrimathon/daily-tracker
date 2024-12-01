@@ -2,37 +2,45 @@ import React, { useState, useEffect } from "react";
 import ActivityForm from "./components/ActivityForm";
 import TaskList from "./components/TaskList";
 import CalendarView from "./components/CalendarView";
-import ActivityChart from "./components/ActivityChart";
 import "./App.css";
+import ProgressChart from "./components/ProgressChart";
 
 const App = () => {
-  // Initialize state with localStorage data
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("tasks");
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
 
-  // Save tasks to localStorage whenever tasks state updates
+  // Save to localStorage on change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  // Add new task
   const addTask = (task) => setTasks([...tasks, task]);
 
-  const toggleComplete = (id) => {
+  // Toggle completion for a date in a task
+  const toggleCompletion = (taskId, date) => {
     const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
+      task.id === taskId
+        ? {
+            ...task,
+            completedDates: task.completedDates.includes(date)
+              ? task.completedDates.filter((d) => d !== date)
+              : [...task.completedDates, date],
+          }
+        : task
     );
     setTasks(updatedTasks);
   };
 
   return (
     <div className="App">
-      <h1>Daily Routine Tracker</h1>
+      <h1 className="heading">Daily Target Tracker</h1>
       <ActivityForm onAddTask={addTask} />
-      <TaskList tasks={tasks} onToggleComplete={toggleComplete} />
-      <CalendarView tasks={tasks} />
-      <ActivityChart tasks={tasks} />
+      <TaskList tasks={tasks} onToggleCompletion={toggleCompletion} />
+      {/* <CalendarView tasks={tasks} /> */}
+      <ProgressChart tasks={tasks} />
     </div>
   );
 };
