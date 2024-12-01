@@ -90,3 +90,54 @@ button:hover {
   justify-content: space-between;
   align-items: center;
 }
+
+
+@media (max-width: 768px) {
+  .App {
+    padding: 15px;
+  }
+
+  .activity-form input,
+  button {
+    flex: 1 1 100%; 
+    max-width: 100%;
+  }
+
+  .task-item {
+    flex: 1 1 100%; 
+    max-width: 100%;
+  }
+
+  .task-list {
+    flex-direction: column; 
+  }
+
+  .sub-heading {
+    flex-wrap: wrap;
+  }
+
+  .date-btn {
+    height: 40px;
+    width: 40px;
+    font-size: 12px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .heading {
+    font-size: 18px; 
+  }
+
+  button {
+    padding: 8px;
+  }
+
+  .date-btn {
+    height: 35px;
+    width: 35px;
+    font-size: 10px;
+  }
+  .activity-form{
+    flex-wrap: wrap;
+  }
+}
