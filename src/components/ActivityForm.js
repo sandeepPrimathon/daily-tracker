@@ -1,39 +1,40 @@
 import React, { useState } from "react";
 
 const ActivityForm = ({ onAddTask }) => {
-  const [date, setDate] = useState("");
-  const [activity, setActivity] = useState("");
+  const [title, setTitle] = useState("");
+  const [deadline, setDeadline] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!date || !activity) return alert("Please fill in all fields.");
+    if (!title || !deadline) return alert("Please fill in all fields.");
     const newTask = {
       id: Date.now(),
-      date,
-      activity,
-      completed: false,
+      title,
+      deadline,
+      completedDates: [],
     };
     onAddTask(newTask);
-    setDate("");
-    setActivity("");
+    setTitle("");
+    setDeadline("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        required
-      />
+    <form onSubmit={handleSubmit} className="activity-form">
       <input
         type="text"
-        value={activity}
-        placeholder="E.g.: Exercise, Reading"
-        onChange={(e) => setActivity(e.target.value)}
+        placeholder="Add Task..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         required
       />
-      <button type="submit">Add Activity</button>
+      <input
+        type="date"
+        placeholder="Select Deadline Date"
+        value={deadline}
+        onChange={(e) => setDeadline(e.target.value)}
+        required
+      />
+      <button type="submit">Add</button>
     </form>
   );
 };
